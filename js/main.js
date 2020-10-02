@@ -12,7 +12,14 @@ document.addEventListener("DOMContentLoaded", async function (e) {
   let game = new Game();
   let player = new Player("Albin");
   let questions = new QuestionsClass();
+  let interface = new Interface(player);
+  questions.array = await questions.getQuestions();
+  console.log(questions.array);
   game.player = player;
   game.questions = questions;
-  questions.array = await questions.getQuestions();
+
+  questions.array[1].isCurrentQuestion = true;
+  questions.array[0].isCurrentQuestion = false;
+  questions.updateCurrentQuestion();
+  console.log(questions.currentQuestion);
 });

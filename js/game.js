@@ -19,7 +19,8 @@
 class Game {
   constructor() {
     this.questionNumber = 0;
-    this.player; // game.player = player?
+    this.player = {}; // game.player = player?
+    this.questions = {};
   }
   startGame() {}
   updateScore() {}

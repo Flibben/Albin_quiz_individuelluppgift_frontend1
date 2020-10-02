@@ -6,5 +6,8 @@ create eventlistener for: answers
  */
 
 class Interface {
-  constructor() {}
+  constructor(player = "should be a name", currentQuestion = {} ) {
+    this.player = player;
+    this.currentQuestion = {};
+  }
 }
