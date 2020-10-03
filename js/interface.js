@@ -5,9 +5,14 @@ create eventlistener for: answers
 
  */
 
-class Interface {
-  constructor(player = "should be a name", currentQuestion = {} ) {
-    this.player = player;
-    this.currentQuestion = {};
+class InterfaceClass {
+  constructor(player, question) {
+    this.name = player.name;
+    this.question = question.currentQuestion;
+    this.score = player.score;
   }
+  createInputInterface() {}
+  createQuizzInterface() {}
+  updateQuizzInterface() {}
+  createEndQuizzInterface() {}
 }

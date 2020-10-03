@@ -8,10 +8,12 @@ game.questions.xxx will also be updated.
 */
 
 document.addEventListener("DOMContentLoaded", async function (e) {
-  let game = new Game();
-  let player = new Player("Albin");
+  let game = new GameClass();
+  let player = new PlayerClass("Albin");
   let questions = new QuestionsClass();
-  let currentQuestion = questions.currentQuestion;
   questions.array = await questions.getQuestions();
-  let interface = new Interface(player, currentQuestion);
+  let interface = new InterfaceClass(player, questions);
+  questions.currentQuestion = questions.updateCurrentQuestion(); 
+  console.log(questions.array);
+
 });

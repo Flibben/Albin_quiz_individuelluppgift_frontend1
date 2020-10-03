@@ -16,7 +16,7 @@
 (Need to reset questions? Maybe it isnt needed because of new object? Is it desired for a player to keep it's score or reset?) 
 
 */
-class Game {
+class GameClass {
   constructor() {
     this.questionNumber = 0;
     this.player = {}; // game.player = player?
