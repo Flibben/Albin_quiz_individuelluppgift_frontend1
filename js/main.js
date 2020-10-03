@@ -13,7 +13,6 @@ document.addEventListener("DOMContentLoaded", async function (e) {
   let questions = new QuestionsClass();
   questions.array = await questions.getQuestions();
   let interface = new InterfaceClass(player, questions);
-  questions.currentQuestion = questions.updateCurrentQuestion(); 
+  questions.currentQuestion = questions.updateCurrentQuestion();
   console.log(questions.array);
-
 });
