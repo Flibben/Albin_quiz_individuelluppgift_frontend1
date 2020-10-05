@@ -1,0 +1,43 @@
+:root {
+  background-color: #feeaff;
+  font-size: 150%; /* if set to 62.5% font-size is set to 10 (browser standard 16px) */
+}
+/* select alla elements
+Set font-family for everything
+Remove browser padding and margin
+*/
+* {
+  box-sizing: border-box; /* sets width and height to include padding and border, instead of add them on top of witdh and height*/
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+#mainContainer {
+  width: 100vw;
+  height: 100vh;
+  padding: 2rem;
+}
+.gameContainer {
+  border: 0.2rem solid #900097;
+  padding: 0.5rem;
+}
+
+.playerContainer {
+  border: solid 0.4rem #900097;
+  padding: 0.4rem;
+  font-size: 3rem;
+}
+
+.questionContainer {
+  border: solid 0.2rem;
+  padding: 0.7rem;
+}
+
+.answersContainer {
+  border: solid 0.1rem;
+  padding: 0.4rem;
+}
+
+.questionCounter {
+}

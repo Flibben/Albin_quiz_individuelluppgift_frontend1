@@ -48,6 +48,7 @@ class QuestionsClass {
       this.array = data;
       return data;
     } catch (err) {
+      document.getElementById("mainContainer").innerHTML = "Nu gick något fel!"
       console.log(err);
       return {
         url: "",
