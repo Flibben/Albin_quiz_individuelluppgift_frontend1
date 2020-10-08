@@ -1,3 +1,12 @@
+/* remove browser padding and get a clean slate to work on */
+/* set background-color */
+/* Set container padding */
+/* Use flexbox to place containers */
+/* Use rem as unit for size of text and space inside/outside/between elements*/
+/* set class question size, color, space  */
+/* set class answer size, color, space */
+/* set class scorekeeping/current questions size, color, space */
+
 :root {
   background-color: #feeaff;
   font-size: 150%; /* if set to 62.5% font-size is set to 10 (browser standard 16px) */
@@ -37,6 +46,14 @@ Remove browser padding and margin
 .answersContainer {
   border: solid 0.1rem;
   padding: 0.4rem;
+}
+
+.answerSelected{
+  background-color: #900097;
+}
+
+.answerSelected > *{
+  background-color: inherit;
 }
 
 .questionCounter {

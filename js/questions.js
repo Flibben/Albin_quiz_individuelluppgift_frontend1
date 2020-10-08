@@ -23,19 +23,17 @@ Method updateQuestions
 
 class QuestionsClass {
   constructor() {
-    this.url = "";
-    this.currentQuestion = {};
+    this.fetchUrl = "https://quizapi.io/api/v1/questions?apiKey=ld4F70jVN3D5kTkRKKfyVkvlCQoO6VwqhyMvlrDM&limit=";
+    this.currentQuestion = 0;
+    this.questionAmount = 0;
   }
-
-  async getQuestions() {
-    let url =
-      "https://quizapi.io/api/v1/questions?apiKey=ld4F70jVN3D5kTkRKKfyVkvlCQoO6VwqhyMvlrDM&limit=10";
+ 
+  async getQuestions() {    
 
     try {
-      const response = await fetch(url);
+      const response = await fetch(this.fetchUrl + this.questionAmount);
       const data = await response.json(); // response converted to array.
       data.forEach((object) => {
-        object.isCurrentQuestion = false;
         object.playerChoice = JSON.parse(
           JSON.stringify(object.correct_answers)
         );
@@ -43,10 +41,8 @@ class QuestionsClass {
           object.playerChoice[value] = "false";
         }
       });
-      data[0].isCurrentQuestion = true;
-      this.currentQuestion = data[0];
+      this.currentQuestion = 0; // Used as pointer --> this.array[currentQuestion]
       this.array = data;
-      return data;
     } catch (err) {
       document.getElementById("mainContainer").innerHTML = "Nu gick något fel!"
       console.log(err);
@@ -55,14 +51,5 @@ class QuestionsClass {
         questionsArray: [],
       };
     }
-  }
-  updateCurrentQuestion() {
-    this.array.forEach((object, index) => {
-      if (object.isCurrentQuestion) {
-        this.currentQuestion = this.array[index];
-        return this.array[index];
-      }
-    });
-    return this.currentQuestion;
   }
 }

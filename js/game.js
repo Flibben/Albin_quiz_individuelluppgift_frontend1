@@ -18,11 +18,20 @@
 */
 class GameClass {
   constructor() {
-    this.questionNumber = 0;
-    this.player = {}; // game.player = player?
-    this.questions = {};
   }
-  startGame() {}
+
+  startGame(iface) {
+    const startButton = document.getElementById("startGame");
+    startButton.addEventListener("click", function (e) {
+      const playerName = document.getElementById("playerNameInput").value;
+      iface.player.name = playerName;
+      const questionAmount = document.getElementById("questionAmount").value;
+      iface.questions.questionAmount = Number(questionAmount);
+      iface.initializeAndGetQuestions();
+    });
+    /* add eventlistener for dropdown menu */
+    /* add eventlistener for input-text-field for name (frist create one) */
+  }
   updateScore() {}
   updateQuestion() {}
 }

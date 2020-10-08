@@ -1,8 +1,10 @@
 /* 
-create div-containers for: questions, score/current question
-create elements for: question, each answer,
-create eventlistener for: answers
-create key with interfaceObject on questions from method createQuizzInterface
+create div-containers for: questions, score/current question DONE
+create elements for: question, each answer, DONE 
+create eventlistener for: answers DONE
+Empty answersContainer from elements before adding elements. DONE
+
+add eventlistener for key rigth and left to go forward and backwards?
  */
 
 /* createQuizInterface()
@@ -11,62 +13,191 @@ create key with interfaceObject on questions from method createQuizzInterface
 
 class InterfaceClass {
   constructor(player, questions) {
+    this.player = player;
     this.name = player.name;
-    this.question = questions.currentQuestion;
+    this.questions = questions;
     this.score = player.score;
-    // this.createQuizzInterface();
+    this.createEndScreen();
   }
-  createInputInterface() {} // For name and amount of questions 5-10
-  // createQuizzInterface() {
-  //   /* reduce and map object.entries with html tags into one array to be displayed as innerHTML at answerContainer
-  //   träna för helvete i mindre format om du behöver för map och reduce, lös det bara så det kommer ut på sidan på
-  //   ett acceptabelt sätt. hur jävla svårt kan det vara?! */
-  //   let answersInHTML = Object.entries(this.question.answers).reduce(function (acc, item) {});
-  //   let questionContainer = document.getElementsByClassName("questionContainer")[0];
-  //   let answerContainer = document.getElementsByClassName("answersContainer")[0];
-  //   questionContainer.innerHTML = this.question.question;
-  //   answerContainer.innerHTML = Object.entries(this.question.answers);
-  //   console.log(Object.entries(this.question.answers));
-  // }
-  updateQuizzInterface(questionObject) {
-    //should start with a delete/remove of childnodes under at least answersContainer, maybe also questionContainer
-    document.getElementsByClassName("questionContainer")[0].innerHTML = questionObject.question;
-    let answersContainer = document.getElementsByClassName("answersContainer")[0];
-    let prefixAnswerHTML = document.createElement("p");
-    let answerHTML = document.createElement("p")
-    Object.entries(questionObject.answers).forEach(element => {
-      console.log(element);
-      if(element[1]) {
-        // element.forEach(answer => {
-          prefixAnswerHTML.textContent = element[0]
-          answersContainer.append(prefixAnswerHTML.cloneNode(true))
-        };
-        answerHTML.textContent = element[1];
-        answersContainer.append(answerHTML.cloneNode(true))
-        // element.forEach(answer){
-        //   document.createElement("p")
-        //   answersContainer.append()
-        // }
 
-      // }
+  addEvtListAndSavePChoice() {
+    //use map to show ability to use it? getelementsbyclass, loop over, set if statements for ++ or --
+    const backward = document.getElementById("backward");
+    const forward = document.getElementById("forward");
+
+    /* eventlisteners that move currentQuestion number back and forth in value  */
+    forward.addEventListener("click", this.pressForward.bind(this));
+    /* arrow function --> no need to use "bind this"*/
+    backward.addEventListener("click", (e) => {
+      if (this.questions.currentQuestion > 0) {
+        const answersContainer = Array.from(document.getElementsByClassName("answersContainer")[0].children);
+        const currentQuestionObject = this.questions.array[this.questions.currentQuestion];
+        let keys = Object.keys(currentQuestionObject.playerChoice);
+
+        for (let i = 0; i < answersContainer.length; i++) {
+          if (answersContainer[i].classList.contains("answerSelected")) {
+            currentQuestionObject.playerChoice[keys[i]] = "true";
+          } else {
+            currentQuestionObject.playerChoice[keys[i]] = "false";
+          }
+        }
+        this.questions.currentQuestion--;
+        this.updateQuizzInterface();
+      } else {
+        console.log("hur fan ska du backa längre bak än " + this.questions.currentQuestion + " ?!?!?");
+      }
     });
-
-
-    // document.getElementsByClassName("answersContainer")[0].innerHTML = Object.entries(questionObject.answers)
-    //   .reduce((HTMLString, createdHTML) => {
-    //     if (createdHTML[1]) {
-    //       createdHTML[0] = document.createElement("p").append(document.createTextNode(createdHTML[0]));
-    //       // console.log(createdHTML[0]);
-    //       createdHTML[1] = "<p>" + createdHTML[1] + "</p>";
-    //       console.log(createdHTML);
-    //     }
-    //     return HTMLString + createdHTML
-    //   })
-      // .reduce((string, createdHTML) => {
-      //   return string + createdHTML;
-      // });
-
-    // return;
   }
-  createEndScreen() {}
+  pressForward(e) {
+    // const answersContainer = Array.from(document.getElementsByClassName("answersContainer")[0].children);
+    const qArrayLength = this.questions.array.length - 1;
+
+    if (this.questions.currentQuestion < qArrayLength) {
+      const answersContainer = Array.from(document.getElementsByClassName("answersContainer")[0].children);
+      const currentQuestionObject = this.questions.array[this.questions.currentQuestion];
+      let keys = Object.keys(currentQuestionObject.playerChoice);
+      for (let i = 0; i < answersContainer.length; i++) {
+        if (answersContainer[i].classList.contains("answerSelected")) {
+          currentQuestionObject.playerChoice[keys[i]] = "true";
+        } else {
+          currentQuestionObject.playerChoice[keys[i]] = "false";
+        }
+      }
+      this.questions.currentQuestion++;
+      this.updateQuizzInterface();
+    } else {
+      console.log("Det finns INGE FLER FRÅGOR ÄN " + this.questions.currentQuestion + " FÖR HELVETE; SLUTA TRYCK!");
+    }
+  }
+
+  async initializeAndGetQuestions() {
+    await this.questions.getQuestions();
+    let pContainer = document.getElementById("playerName");
+    // pContainer.innerText = this.name;
+    pContainer.innerText = "Welcome " + this.player.name + "!";
+    this.addEvtListAndSavePChoice();
+    this.updateQuizzInterface();
+    console.log(this.questions.array);
+  }
+
+  updateQuizzInterface() {
+    /* Get containers and create new elements and define variables*/
+    const questionContainer = document.getElementsByClassName("questionContainer")[0];
+    const questionContainerHTML = document.createElement("p");
+    const questionCounter = document.createElement("p");
+    const answersContainer = document.getElementsByClassName("answersContainer")[0];
+    const wrappedAnswer = document.createElement("span");
+    const index = this.questions.currentQuestion;
+    const currentQuestionObject = this.questions.array[index];
+    const entriesPlayer = Object.entries(currentQuestionObject.playerChoice);
+    const prefixAnswerHTML = document.createElement("p");
+    const answerHTML = document.createElement("p");
+
+    this.resetQandAContainers(answersContainer, questionContainer);
+
+    /*  fill containers with element wrapped question and answers,  information from API */
+    console.log("creating new elements and filling them with question and answers ");
+    questionCounter.textContent = index + 1 + "/" + this.questions.array.length;
+    questionContainerHTML.textContent = currentQuestionObject.question;
+    questionContainer.append(questionCounter);
+    questionContainer.append(questionContainerHTML);
+
+    /* object -> array -> forEach -> if true -> eventlistener */
+    this.addElementsWithListenerForEachAnswerChoice(currentQuestionObject, wrappedAnswer, prefixAnswerHTML, answerHTML, answersContainer);
+    this.setClassDependingOnPlayerChoiceObject(entriesPlayer);
+  }
+
+  resetQandAContainers(answersContainer, questionContainer) {
+    while (answersContainer.firstChild) {
+      answersContainer.removeChild(answersContainer.firstChild);
+    }
+    while (questionContainer.firstChild) {
+      questionContainer.removeChild(questionContainer.firstChild);
+    }
+    console.log("removed previous elements in answersContainer");
+  }
+  addElementsWithListenerForEachAnswerChoice(currentQuestionObject, wrappedAnswer, prefixAnswerHTML, answerHTML, answersContainer) {
+    Object.entries(currentQuestionObject.answers).forEach((element) => {
+      if (element[1]) {
+        const temp = wrappedAnswer.cloneNode(true);
+
+        temp.addEventListener("click", (e) => {
+          temp.classList.toggle("answerSelected");
+        });
+
+        prefixAnswerHTML.textContent = element[0];
+        temp.append(prefixAnswerHTML.cloneNode(true));
+        answerHTML.textContent = element[1];
+        temp.append(answerHTML.cloneNode(true));
+        answersContainer.append(temp);
+      }
+    });
+  }
+
+  setClassDependingOnPlayerChoiceObject(entriesPlayer) {
+    // let currentQuestionObject = this.questions.array[index];
+    // let entriesPlayer = Object.entries(currentQuestionObject.playerChoice);
+    let answersContainer = Array.from(document.getElementsByClassName("answersContainer")[0].children);
+    for (let i = 0; i < answersContainer.length; i++) {
+      if (entriesPlayer[i][1] == "true") {
+        answersContainer[i].classList.add("answerSelected");
+      } else if (entriesPlayer[i][1] == "false" && answersContainer[i].classList.contains("answerSelected")) {
+        answersContainer[i].classList.remove("answerSelected");
+      }
+    }
+  }
+
+  createEndScreen() {
+    //correct() checking right answers - should take 2 parameters (playerchoice, array.correct_answers)
+    document.getElementById("gameFinnished").addEventListener("click", (e) => {
+      this.resetQandAContainers(document.getElementsByClassName("answersContainer")[0], document.getElementsByClassName("questionContainer")[0]); //breake out answercontainer and questioncontainer from updatequizzinterface? reuse code!
+
+      document.getElementsByClassName("questionContainer")[0].innerText = this.correct();
+    });
+  }
+  correct() {
+    //skapa arrayerna elsewhere -> this is perfect for map. map what now is correctarray and pcarray to one array with 2 arrays in each index.
+    let qArrayLength = this.questions.array.length;
+    let rightAnswers = 0;
+    let wrongAnswers = 0;
+    for (let i = 0; i < qArrayLength; i++) {
+      //For every everyquestion, check playerChoice to correctAnswer
+      let correctArray = Object.values(this.questions.array[i].correct_answers);
+      let pcArray = Object.values(this.questions.array[i].playerChoice);
+      let checkLength = correctArray.length;
+      let checkSum = 0;
+
+      for (let index = 0; index < checkLength; index++) {
+        if (correctArray[index] == pcArray[index]) {
+          checkSum++;
+        }
+      }
+
+      if (checkSum == checkLength) {
+        console.log("du fick en poäng! " + ++rightAnswers + "p än så länge!");
+      } else {
+        console.log("wrong answers: " + ++wrongAnswers);
+      }
+    }
+    const answersCorrectedAndGoodBye = "Thanks for playing, you got: " + rightAnswers + " right and " + wrongAnswers + " wrong. Wanna try again?";
+    return answersCorrectedAndGoodBye;
+  }
 }
+// console.log(aArray);
+// console.log(cArray);
+// if (JSON.stringify(aArray) == JSON.stringify(cArray)){
+//   console.log("tjaba");
+// }
+
+/*let rightAnswers = 
+    this.questions.array
+      reduce
+      every question/iteration
+        loop 
+          placyerchoice(make array?)
+          correct_answers(make array?)
+          if playerchoice(s) values === correct_answer(s) values
+            return 1 point
+          else
+            return 0 point
+    */
