@@ -33,16 +33,17 @@ class QuestionsClass {
     try {
       const response = await fetch(this.fetchUrl + this.questionAmount);
       const data = await response.json(); // response converted to array.
-      data.forEach((object) => {
+      this.array = data.map((object) => {
         object.playerChoice = JSON.parse(
           JSON.stringify(object.correct_answers)
         );
         for (const value in object.playerChoice) {
           object.playerChoice[value] = "false";
         }
+        return object;
       });
       this.currentQuestion = 0; // Used as pointer --> this.array[currentQuestion]
-      this.array = data;
+
     } catch (err) {
       document.getElementById("mainContainer").innerHTML = "Nu gick något fel!"
       console.log(err);
