@@ -51,6 +51,7 @@ Remove browser padding and margin
   border: solid 0.13rem;
   padding: 0.7rem;
   margin: 0.2rem;
+  box-shadow: 0.05rem 0.05rem 0rem 0rem
 }
 
 .answersContainer {
@@ -61,6 +62,8 @@ Remove browser padding and margin
   display: flex;
   border: solid 0.13rem;
   margin: 0.2rem;
+  box-shadow: 0.05rem 0.05rem 0rem 0rem
+
 }
 .answersContainer > span:hover {
   cursor: pointer;
@@ -102,5 +105,12 @@ Remove browser padding and margin
   padding: 0.2rem;
   margin: 0.2rem;
   margin-top: 0.4rem;
+}
+
+input {
+  padding: 0.2rem;
+}
+select{
+  padding: 0.2rem;
 }
 
