@@ -75,7 +75,7 @@ class InterfaceClass {
     let pContainer = document.getElementById("playerName");
     // pContainer.innerText = this.name;
     pContainer.innerText = "Welcome " + this.player.name + "!";
-    if (this.player.playedBefore == false) {
+    if (!this.player.playedBefore) {
       this.addEvtListAndSavePChoice();
     }
     this.updateQuizzInterface();
