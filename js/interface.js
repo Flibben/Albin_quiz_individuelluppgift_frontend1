@@ -78,8 +78,9 @@ class InterfaceClass {
     if (!this.player.playedBefore) {
       this.addEvtListAndSavePChoice();
     }
+    document.getElementById("backward").disabled = false;
+    document.getElementById("forward").disabled = false;
     this.updateQuizzInterface();
-    console.log(this.questions.array);
   }
 
   updateQuizzInterface() {
@@ -155,6 +156,8 @@ class InterfaceClass {
       this.resetQandAContainers(document.getElementsByClassName("answersContainer")[0], document.getElementsByClassName("questionContainer")[0]); //breake out answercontainer and questioncontainer from updatequizzinterface? reuse code!
       document.getElementsByClassName("questionContainer")[0].innerText = this.correct();
       this.getNewQuestions()
+      document.getElementById("backward").disabled = true;
+      document.getElementById("forward").disabled = true;
     });
   }
   correct() {

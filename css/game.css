@@ -47,14 +47,33 @@ Remove browser padding and margin
   border: solid 0.1rem;
   padding: 0.4rem;
 }
+.answersContainer > span {
+  display: flex;
+}
 
-.answerSelected{
+.answersContainer > span {
+  display: flex;
+}
+
+.answersContainer > span > p {
+  margin-right: 0.7rem;
+  margin: 0.19rem;
+}
+
+.answerSelected {
   background-color: #900097;
 }
 
-.answerSelected > *{
+.answerSelected > * {
   background-color: inherit;
 }
 
 .questionCounter {
 }
+
+.button {
+  padding: 0.2rem;
+  margin: 0.2rem;
+  margin-top: 0.4rem;
+}
+
