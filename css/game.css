@@ -23,17 +23,18 @@ Remove browser padding and margin
 }
 
 #mainContainer {
+  display: flex;
+  flex-direction: column;
   width: 30vw;
-  height: 80vh;
   padding: 2rem;
 }
 .gameContainer {
-  border: 0.2rem solid #900097;
+  border: 0.2rem solid #3f0042;
   padding: 0.5rem;
 }
 
 .playerContainer {
-  border: solid 0.3rem #900097;
+  border: solid 0.3rem #3f0042;
   padding: 0.4rem;
   font-size: 3rem;
   margin: 0.2rem;
@@ -54,6 +55,11 @@ Remove browser padding and margin
   border: solid 0.13rem;
   margin: 0.2rem;
 }
+.answersContainer > span:hover {
+  cursor: pointer;
+  transform: translateY(-0.15rem);
+  transition: transform 50ms;
+}
 
 .answersContainer > span > p {
   margin-right: 0.7rem;
@@ -63,7 +69,7 @@ Remove browser padding and margin
 .answersContainer > span > p:first-child {
   background-color: #f5d1f8;
   padding-right: 0.6rem;
-  padding-top: 0.4rem;
+
   font-weight: 900;
 }
 
