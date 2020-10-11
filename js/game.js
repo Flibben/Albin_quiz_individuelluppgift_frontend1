@@ -29,8 +29,7 @@ class GameClass {
       iface.questions.questionAmount = Number(questionAmount);
       iface.initializeAndGetQuestions();
     });
-    /* add eventlistener for dropdown menu */
-    /* add eventlistener for input-text-field for name (frist create one) */
+    
   }
   updateScore() {}
   updateQuestion() {}

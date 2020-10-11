@@ -20,6 +20,47 @@ class InterfaceClass {
     this.createEndScreen();
   }
 
+  async initializeAndGetQuestions() {
+    await this.questions.getQuestions();
+    let pContainer = document.getElementById("playerName");
+    // pContainer.innerText = this.name;
+    pContainer.innerText = "Welcome " + this.player.name + "!";
+    if (!this.player.playedBefore) {
+      this.addEvtListAndSavePChoice();
+    }
+    document.getElementById("backward").disabled = false;
+    document.getElementById("forward").disabled = false;
+    document.getElementById("gameFinnished").disabled = false;
+    this.updateQuizzInterface();
+  }
+
+  updateQuizzInterface() {
+    /* Get containers and create new elements and define variables*/
+    const questionContainer = document.getElementsByClassName("questionContainer")[0];
+    const questionContainerHTML = document.createElement("p");
+    const questionCounter = document.createElement("p");
+    const answersContainer = document.getElementsByClassName("answersContainer")[0];
+    const wrappedAnswer = document.createElement("span");
+    const index = this.questions.currentQuestion;
+    const currentQuestionObject = this.questions.array[index];
+    const entriesPlayer = Object.entries(currentQuestionObject.playerChoice);
+    const prefixAnswerHTML = document.createElement("p");
+    const answerHTML = document.createElement("p");
+
+    this.resetQandAContainers(answersContainer, questionContainer);
+
+    /*  fill containers with element wrapped question and answers,  information from API */
+    console.log("creating new elements and filling them with question and answers ");
+    questionCounter.textContent = index + 1 + "/" + this.questions.array.length;
+    questionContainerHTML.textContent = currentQuestionObject.question;
+    questionContainer.append(questionCounter);
+    questionContainer.append(questionContainerHTML);
+
+    /* object -> array -> forEach -> if true -> eventlistener */
+    this.addElementsWithListenerForEachAnswerChoice(currentQuestionObject, wrappedAnswer, prefixAnswerHTML, answerHTML, answersContainer);
+    this.setClassDependingOnPlayerChoiceObject(entriesPlayer);
+  }
+
   addEvtListAndSavePChoice() {
     //use map to show ability to use it? getelementsbyclass, loop over, set if statements for ++ or --
     const backward = document.getElementById("backward");
@@ -70,46 +111,6 @@ class InterfaceClass {
     }
   }
 
-  async initializeAndGetQuestions() {
-    await this.questions.getQuestions();
-    let pContainer = document.getElementById("playerName");
-    // pContainer.innerText = this.name;
-    pContainer.innerText = "Welcome " + this.player.name + "!";
-    if (!this.player.playedBefore) {
-      this.addEvtListAndSavePChoice();
-    }
-    document.getElementById("backward").disabled = false;
-    document.getElementById("forward").disabled = false;
-    this.updateQuizzInterface();
-  }
-
-  updateQuizzInterface() {
-    /* Get containers and create new elements and define variables*/
-    const questionContainer = document.getElementsByClassName("questionContainer")[0];
-    const questionContainerHTML = document.createElement("p");
-    const questionCounter = document.createElement("p");
-    const answersContainer = document.getElementsByClassName("answersContainer")[0];
-    const wrappedAnswer = document.createElement("span");
-    const index = this.questions.currentQuestion;
-    const currentQuestionObject = this.questions.array[index];
-    const entriesPlayer = Object.entries(currentQuestionObject.playerChoice);
-    const prefixAnswerHTML = document.createElement("p");
-    const answerHTML = document.createElement("p");
-
-    this.resetQandAContainers(answersContainer, questionContainer);
-
-    /*  fill containers with element wrapped question and answers,  information from API */
-    console.log("creating new elements and filling them with question and answers ");
-    questionCounter.textContent = index + 1 + "/" + this.questions.array.length;
-    questionContainerHTML.textContent = currentQuestionObject.question;
-    questionContainer.append(questionCounter);
-    questionContainer.append(questionContainerHTML);
-
-    /* object -> array -> forEach -> if true -> eventlistener */
-    this.addElementsWithListenerForEachAnswerChoice(currentQuestionObject, wrappedAnswer, prefixAnswerHTML, answerHTML, answersContainer);
-    this.setClassDependingOnPlayerChoiceObject(entriesPlayer);
-  }
-
   resetQandAContainers(answersContainer, questionContainer) {
     while (answersContainer.firstChild) {
       answersContainer.removeChild(answersContainer.firstChild);
@@ -154,10 +155,14 @@ class InterfaceClass {
     //correct() checking right answers - should take 2 parameters (playerchoice, array.correct_answers)
     document.getElementById("gameFinnished").addEventListener("click", (e) => {
       this.resetQandAContainers(document.getElementsByClassName("answersContainer")[0], document.getElementsByClassName("questionContainer")[0]); //breake out answercontainer and questioncontainer from updatequizzinterface? reuse code!
-      document.getElementsByClassName("questionContainer")[0].innerText = this.correct();
-      this.getNewQuestions()
+      let p = document.createElement("p");
+      p.innerText = this.correct();
+
+      document.getElementsByClassName("questionContainer")[0].append(p);
+      this.getNewQuestions();
       document.getElementById("backward").disabled = true;
       document.getElementById("forward").disabled = true;
+      document.getElementById("gameFinnished").disabled = true;
     });
   }
   correct() {
@@ -187,25 +192,25 @@ class InterfaceClass {
     const answersCorrectedAndGoodBye = "Thanks for playing, you got: " + rightAnswers + " right and " + wrongAnswers + " wrong. Wanna try again?";
     return answersCorrectedAndGoodBye;
   }
- getNewQuestions(){
+  getNewQuestions() {
     const newQuestionsBtn = document.createElement("button");
     const newQuestionsAmount = document.createElement("input");
     console.log(newQuestionsBtn);
-    newQuestionsAmount.setAttribute("type","text");
-    newQuestionsAmount.setAttribute("id","newQuestionsAmount");
-    newQuestionsAmount.setAttribute("placeholder","number from 5 to 10");
-    const questionContainer = document.getElementsByClassName("questionContainer")[0]; 
-    newQuestionsBtn.setAttribute("id","getNewQuestions");
+    newQuestionsAmount.setAttribute("type", "text");
+    newQuestionsAmount.setAttribute("id", "newQuestionsAmount");
+    newQuestionsAmount.setAttribute("placeholder", "number from 5 to 10");
+    const questionContainer = document.getElementsByClassName("questionContainer")[0];
+    newQuestionsBtn.setAttribute("id", "getNewQuestions");
+    newQuestionsBtn.setAttribute("class", "button");
     newQuestionsBtn.innerText = "Get new questions";
     questionContainer.append(newQuestionsBtn);
-    questionContainer.append(newQuestionsAmount)
+    questionContainer.append(newQuestionsAmount);
     newQuestionsBtn.addEventListener("click", (e) => {
-      this.questions.questionAmount =  Number(newQuestionsAmount.value);
+      this.questions.questionAmount = Number(newQuestionsAmount.value);
       console.log(newQuestionsAmount.value);
       this.initializeAndGetQuestions();
       this.player.playedBefore = true;
-    } )
-
+    });
   }
 }
 // console.log(aArray);
