@@ -17,19 +17,19 @@
 
 */
 class GameClass {
-  constructor() {
-  }
+  constructor() {}
 
   startGame(iface) {
     const startButton = document.getElementById("startGame");
     startButton.addEventListener("click", function (e) {
       const playerName = document.getElementById("playerNameInput").value;
-      iface.player.name = playerName;
+      if (playerName) {
+        iface.player.name = playerName;
+      }
       const questionAmount = document.getElementById("questionAmount").value;
       iface.questions.questionAmount = Number(questionAmount);
       iface.initializeAndGetQuestions();
     });
-    
   }
   updateScore() {}
   updateQuestion() {}

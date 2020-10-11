@@ -2,7 +2,7 @@
 
 class PlayerClass {
   constructor() {
-    this.name = "";
+    this.name = "kind stranger";
     this.score = 0;
     this.playedBefore = false;
   }

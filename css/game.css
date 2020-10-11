@@ -10,6 +10,9 @@
 :root {
   background-color: #feeaff;
   font-size: 100%; /* if set to 62.5% font-size is set to 10 (browser standard 16px) */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 /* select alla elements
 Set font-family for everything
@@ -20,23 +23,27 @@ Remove browser padding and margin
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   margin: 0;
   padding: 0;
+
 }
 
 #mainContainer {
+  
   display: flex;
   flex-direction: column;
-  width: 30vw;
+
+  max-width: 40rem;
   padding: 2rem;
 }
 .gameContainer {
   border: 0.2rem solid #3f0042;
   padding: 0.5rem;
+  box-shadow: 0.5rem 0.5rem 0rem -0.1rem
 }
 
 .playerContainer {
   border: solid 0.3rem #3f0042;
   padding: 0.4rem;
-  font-size: 3rem;
+  font-size: 2rem;
   margin: 0.2rem;
 }
 
@@ -86,6 +93,9 @@ Remove browser padding and margin
 }
 
 .questionCounter {
+  font-weight: 800;
+  padding-bottom: 1rem;
+  text-decoration: underline;
 }
 
 .button {
@@ -93,3 +103,4 @@ Remove browser padding and margin
   margin: 0.2rem;
   margin-top: 0.4rem;
 }
+

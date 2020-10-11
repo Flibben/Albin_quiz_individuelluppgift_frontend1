@@ -39,6 +39,7 @@ class InterfaceClass {
     const questionContainer = document.getElementsByClassName("questionContainer")[0];
     const questionContainerHTML = document.createElement("p");
     const questionCounter = document.createElement("p");
+    questionCounter.setAttribute("class", "questionCounter");
     const answersContainer = document.getElementsByClassName("answersContainer")[0];
     const wrappedAnswer = document.createElement("span");
     const index = this.questions.currentQuestion;
@@ -51,7 +52,7 @@ class InterfaceClass {
 
     /*  fill containers with element wrapped question and answers,  information from API */
     console.log("creating new elements and filling them with question and answers ");
-    questionCounter.textContent = index + 1 + "/" + this.questions.array.length;
+    questionCounter.textContent = "Question #" + (index + 1) + " of " + this.questions.array.length;
     questionContainerHTML.textContent = currentQuestionObject.question;
     questionContainer.append(questionCounter);
     questionContainer.append(questionContainerHTML);
