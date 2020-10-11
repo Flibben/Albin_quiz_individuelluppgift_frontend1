@@ -4,5 +4,6 @@ class PlayerClass {
   constructor() {
     this.name = "";
     this.score = 0;
+    this.playedBefore = false;
   }
 }

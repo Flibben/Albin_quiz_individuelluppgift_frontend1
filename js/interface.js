@@ -75,7 +75,9 @@ class InterfaceClass {
     let pContainer = document.getElementById("playerName");
     // pContainer.innerText = this.name;
     pContainer.innerText = "Welcome " + this.player.name + "!";
-    this.addEvtListAndSavePChoice();
+    if (this.player.playedBefore == false) {
+      this.addEvtListAndSavePChoice();
+    }
     this.updateQuizzInterface();
     console.log(this.questions.array);
   }
@@ -151,8 +153,8 @@ class InterfaceClass {
     //correct() checking right answers - should take 2 parameters (playerchoice, array.correct_answers)
     document.getElementById("gameFinnished").addEventListener("click", (e) => {
       this.resetQandAContainers(document.getElementsByClassName("answersContainer")[0], document.getElementsByClassName("questionContainer")[0]); //breake out answercontainer and questioncontainer from updatequizzinterface? reuse code!
-
       document.getElementsByClassName("questionContainer")[0].innerText = this.correct();
+      this.getNewQuestions()
     });
   }
   correct() {
@@ -181,6 +183,26 @@ class InterfaceClass {
     }
     const answersCorrectedAndGoodBye = "Thanks for playing, you got: " + rightAnswers + " right and " + wrongAnswers + " wrong. Wanna try again?";
     return answersCorrectedAndGoodBye;
+  }
+ getNewQuestions(){
+    const newQuestionsBtn = document.createElement("button");
+    const newQuestionsAmount = document.createElement("input");
+    console.log(newQuestionsBtn);
+    newQuestionsAmount.setAttribute("type","text");
+    newQuestionsAmount.setAttribute("id","newQuestionsAmount");
+    newQuestionsAmount.setAttribute("placeholder","number from 5 to 10");
+    const questionContainer = document.getElementsByClassName("questionContainer")[0]; 
+    newQuestionsBtn.setAttribute("id","getNewQuestions");
+    newQuestionsBtn.innerText = "Get new questions";
+    questionContainer.append(newQuestionsBtn);
+    questionContainer.append(newQuestionsAmount)
+    newQuestionsBtn.addEventListener("click", (e) => {
+      this.questions.questionAmount =  Number(newQuestionsAmount.value);
+      console.log(newQuestionsAmount.value);
+      this.initializeAndGetQuestions();
+      this.player.playedBefore = true;
+    } )
+
   }
 }
 // console.log(aArray);
