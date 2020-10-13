@@ -3,7 +3,6 @@
 class PlayerClass {
   constructor() {
     this.name = "kind stranger";
-    this.score = 0;
     this.playedBefore = false;
   }
 }

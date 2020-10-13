@@ -1,15 +1,12 @@
 /* 
-create div-containers for: questions, score/current question DONE
-create elements for: question, each answer, DONE 
-create eventlistener for: answers DONE
-Empty answersContainer from elements before adding elements. DONE
+This class creates, removes and/or gets elements and puts information inside of them
+depending on the choices of player. Eventlisteners for buttons also is set here.
+Most Methods, variables and eventlisteners should be self-explanatory.
 
-add eventlistener for key rigth and left to go forward and backwards?
- */
+Imports object Player and Questions.
 
-/* createQuizInterface()
-      save variable from index.html (can set visibility to hidden and later change
-       when put back so user never sees this) and then delete node? */
+
+*/
 
 class InterfaceClass {
   constructor(player, questions) {
@@ -23,7 +20,6 @@ class InterfaceClass {
   async initializeAndGetQuestions() {
     await this.questions.getQuestions();
     let pContainer = document.getElementById("playerName");
-    // pContainer.innerText = this.name;
     pContainer.innerText = "Welcome " + this.player.name + "!";
     if (!this.player.playedBefore) {
       this.addEvtListAndSavePChoice();
@@ -34,8 +30,8 @@ class InterfaceClass {
     this.updateQuizzInterface();
   }
 
+  /* Get containers and create new elements and define variables*/
   updateQuizzInterface() {
-    /* Get containers and create new elements and define variables*/
     const questionContainer = document.getElementsByClassName("questionContainer")[0];
     const questionContainerHTML = document.createElement("p");
     const questionCounter = document.createElement("p");
@@ -48,6 +44,7 @@ class InterfaceClass {
     const prefixAnswerHTML = document.createElement("p");
     const answerHTML = document.createElement("p");
 
+    /* Reset Question and Answer containers*/
     this.resetQandAContainers(answersContainer, questionContainer);
 
     /*  fill containers with element wrapped question and answers,  information from API */
@@ -57,18 +54,19 @@ class InterfaceClass {
     questionContainer.append(questionCounter);
     questionContainer.append(questionContainerHTML);
 
-    /* object -> array -> forEach -> if true -> eventlistener */
+    /* object -> array -> forEach -> if (question is not null) true -> eventlistener */
     this.addElementsWithListenerForEachAnswerChoice(currentQuestionObject, wrappedAnswer, prefixAnswerHTML, answerHTML, answersContainer);
+
     this.setClassDependingOnPlayerChoiceObject(entriesPlayer);
   }
 
   addEvtListAndSavePChoice() {
-    //use map to show ability to use it? getelementsbyclass, loop over, set if statements for ++ or --
     const backward = document.getElementById("backward");
     const forward = document.getElementById("forward");
 
-    /* eventlisteners that move currentQuestion number back and forth in value  */
+    /* eventlisteners moves currentQuestion number up and down in value  */
     forward.addEventListener("click", this.pressForward.bind(this));
+
     /* arrow function --> no need to use "bind this"*/
     backward.addEventListener("click", (e) => {
       if (this.questions.currentQuestion > 0) {
@@ -90,8 +88,8 @@ class InterfaceClass {
       }
     });
   }
+
   pressForward(e) {
-    // const answersContainer = Array.from(document.getElementsByClassName("answersContainer")[0].children);
     const qArrayLength = this.questions.array.length - 1;
 
     if (this.questions.currentQuestion < qArrayLength) {
@@ -123,6 +121,7 @@ class InterfaceClass {
   }
   addElementsWithListenerForEachAnswerChoice(currentQuestionObject, wrappedAnswer, prefixAnswerHTML, answerHTML, answersContainer) {
     Object.entries(currentQuestionObject.answers).forEach((element) => {
+      //if there is a question - do this
       if (element[1]) {
         const temp = wrappedAnswer.cloneNode(true);
 
@@ -140,8 +139,6 @@ class InterfaceClass {
   }
 
   setClassDependingOnPlayerChoiceObject(entriesPlayer) {
-    // let currentQuestionObject = this.questions.array[index];
-    // let entriesPlayer = Object.entries(currentQuestionObject.playerChoice);
     let answersContainer = Array.from(document.getElementsByClassName("answersContainer")[0].children);
     for (let i = 0; i < answersContainer.length; i++) {
       if (entriesPlayer[i][1] == "true") {
@@ -153,10 +150,10 @@ class InterfaceClass {
   }
 
   createEndScreen() {
-    //correct() checking right answers - should take 2 parameters (playerchoice, array.correct_answers)
     document.getElementById("gameFinnished").addEventListener("click", (e) => {
       this.resetQandAContainers(document.getElementsByClassName("answersContainer")[0], document.getElementsByClassName("questionContainer")[0]); //breake out answercontainer and questioncontainer from updatequizzinterface? reuse code!
       let p = document.createElement("p");
+      //Run method Correct and save it to element.innertext
       p.innerText = this.correct();
 
       document.getElementsByClassName("questionContainer")[0].append(p);
@@ -166,24 +163,25 @@ class InterfaceClass {
       document.getElementById("gameFinnished").disabled = true;
     });
   }
+
   correct() {
-    //skapa arrayerna elsewhere -> this is perfect for map. map what now is correctarray and pcarray to one array with 2 arrays in each index.
     let qArrayLength = this.questions.array.length;
     let rightAnswers = 0;
     let wrongAnswers = 0;
+    //For every everyquestion, check playerChoice to correctAnswer
     for (let i = 0; i < qArrayLength; i++) {
-      //For every everyquestion, check playerChoice to correctAnswer
       let correctArray = Object.values(this.questions.array[i].correct_answers);
       let pcArray = Object.values(this.questions.array[i].playerChoice);
       let checkLength = correctArray.length;
       let checkSum = 0;
-
+      //loops through index for answers and playerchoice. If true ++checksum
       for (let index = 0; index < checkLength; index++) {
         if (correctArray[index] == pcArray[index]) {
           checkSum++;
         }
       }
 
+      //adds points to right or wrong answer depening on outcome. Works for multiple choice answers, all have to be right.
       if (checkSum == checkLength) {
         console.log("du fick en poäng! " + ++rightAnswers + "p än så länge!");
       } else {
@@ -214,21 +212,3 @@ class InterfaceClass {
     });
   }
 }
-// console.log(aArray);
-// console.log(cArray);
-// if (JSON.stringify(aArray) == JSON.stringify(cArray)){
-//   console.log("tjaba");
-// }
-
-/*let rightAnswers = 
-    this.questions.array
-      reduce
-      every question/iteration
-        loop 
-          placyerchoice(make array?)
-          correct_answers(make array?)
-          if playerchoice(s) values === correct_answer(s) values
-            return 1 point
-          else
-            return 0 point
-    */

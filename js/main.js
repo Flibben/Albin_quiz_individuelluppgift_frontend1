@@ -1,6 +1,17 @@
 /* 
-game.questions points to the object questions of QuestionsClass, if something is done with questions.xxx then
-game.questions.xxx will also be updated.
+Runs when DOM is loaded, creates all Objects.
+Class hiearchy
+.....GAME.........
+.......|..........
+...INTERFACE......
+...../....\.......
+PLAYER...QUESTIONS
+..................
+
+If class is below other class, it should not be able
+to do something with the above class. Information
+is fetched from bottom to the top.
+
 */
 
 document.addEventListener("DOMContentLoaded", function (e) {
