@@ -1,6 +1,7 @@
 G: array.map -> questions.js L18
 
 VG: Metoder som tar emot parametrar -> startGame i main.js L22 | interface.js @ L48, 58, 60, 113, 122, 141
+
 Metod som rättar och ger rätt oavsett ett eller flera möjliga svar @ L167
 
 
